@@ -7,6 +7,15 @@ import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover"
 import { useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/services/store.service"
 import { Skeleton } from "@heroui/skeleton"
+import { Category } from "@/interfaces/product.interface"
+
+export const categoryNames: {[key: string]: string} = {
+  [Category.Electronics]: 'Electrónicos',
+  [Category.Jewelery]: 'Joyería',
+  [Category.MenSClothing]: 'Ropa de hombre',
+  [Category.WomenSClothing]: 'Ropa de mujer',
+  default: 'Todas las categorías'
+}
 
 export default function CategoryFilter() {
   const router = useRouter()
@@ -18,6 +27,18 @@ export default function CategoryFilter() {
     queryFn: getCategories,
     queryKey: ['categories']
   })
+
+  const searchCategory = () => {
+    if(!currentCategory)
+      return categoryNames['default']
+
+    if(!categories) return ''
+
+    const category = categories.find((category) => category.toLowerCase() === currentCategory.toLowerCase()) ||
+        'default'
+
+    return categoryNames[category]
+  }
 
   const handleCategorySelect = (category: string) => {
     const params = new URLSearchParams(searchParams)
@@ -46,10 +67,7 @@ export default function CategoryFilter() {
       <Popover placement="bottom">
         <PopoverTrigger>
           <Button variant="bordered" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-            {currentCategory
-              ? categories.find((category) => category.toLowerCase() === currentCategory.toLowerCase()) ||
-                "Todas las categorías"
-              : "Todas las categorías"}
+            {searchCategory()}
             <LuChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -67,7 +85,7 @@ export default function CategoryFilter() {
               <LuCheck
                 className={`mr-2 h-4 w-4 ${currentCategory === category ? "opacity-100" : "opacity-0"}`}
               />
-              {category}
+              {categoryNames[category]}
             </Button>
           ))}
         </PopoverContent>

@@ -12,7 +12,7 @@ export default function ProductGrid() {
   const categoryParam = searchParams.get("category")
 
   const { data: products, isLoading, refetch } = useQuery({
-    queryFn: () => getProducts(categoryParam as Category),
+    queryFn: () => getProducts(categoryParam?.toLowerCase() as Category),
     queryKey: ['products']
   })
 
