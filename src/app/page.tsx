@@ -1,3 +1,4 @@
+import CategoryFilter from "@/components/category-filter";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import { LuPlus } from "react-icons/lu";
@@ -16,6 +17,10 @@ export default function Home() {
             Agregar producto
           </Button>
         </Link>
+      </div>
+        
+      <div className="mb-8">
+        <CategoryFilter />
       </div>
     </div>
 
