@@ -7,6 +7,7 @@ import { Chip } from "@heroui/chip"
 import { Card, CardBody, CardFooter } from "@heroui/card"
 import { Modal, ModalContent, useDisclosure, ModalHeader, ModalFooter } from "@heroui/modal"
 import type { Product } from "@/interfaces/product.interface"
+import { categoryNames } from "./category-filter"
 
 interface ProductCardProps {
   product: Product
@@ -23,7 +24,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           alt={product.title}
           width={150}
           height={150}
-          className="object-contain max-h-full"
+          className="object-contain max-h-full w-auto"
           style={{ maxWidth: "100%" }}
         />
       </div>
@@ -36,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
         <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{product.description}</p>
         <Chip variant="flat" className="mt-3">
-          {product.category}
+          {categoryNames[product.category]}
         </Chip>
       </CardBody>
       <CardFooter className="p-4 pt-0 flex justify-between gap-2">

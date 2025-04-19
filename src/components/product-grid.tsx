@@ -13,7 +13,8 @@ export default function ProductGrid() {
 
   const { data: products, isLoading, refetch } = useQuery({
     queryFn: () => getProducts(categoryParam?.toLowerCase() as Category),
-    queryKey: ['products']
+    queryKey: ['products'],
+    staleTime: 10000,
   })
 
   useEffect(() => {

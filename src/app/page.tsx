@@ -12,7 +12,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold tracking-tight">Productos</h1>
           <p className="text-muted-foreground mt-1">Explora y admistra el catálogo de productos</p>
         </div>
-        <Link href="/">
+        <Link href="/new">
           <Button size="lg">
             <LuPlus className="mr-2 h-4 w-4" />
             Agregar producto
