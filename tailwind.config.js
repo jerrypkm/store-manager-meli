@@ -2,7 +2,7 @@ import { heroui } from '@heroui/theme';
 /** @type {import('tailwindcss').Config} */
 export const content = [
   "./src/**/*.{js,ts,jsx,tsx,mdx}",
-  "./node_modules/@heroui/theme/dist/components/(button|dropdown|popover|skeleton|ripple|spinner|menu|divider).js"
+  "./node_modules/@heroui/theme/dist/components/(button|card|chip|dropdown|modal|popover|skeleton|ripple|spinner|menu|divider).js"
 ];
 export const darkMode = 'class';
 export const theme = {

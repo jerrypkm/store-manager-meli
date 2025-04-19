@@ -1,9 +1,11 @@
-import { ProductsResponse, CategoriesResponse } from "@/interfaces/service.interface";
+import { Category } from "@/interfaces/product.interface";
+import type { ProductsResponse, CategoriesResponse } from "@/interfaces/service.interface";
 const storeBaseURL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
-export const getProducts = async (): Promise<ProductsResponse> => {   
+export const getProducts = async (category?: Category): Promise<ProductsResponse> => {   
+  const categoryPath = category ? `/category/${category}` : ''
   const response = await fetch(
-    `${storeBaseURL}/products`,
+    `${storeBaseURL}/products${categoryPath}`,
     {
       method: 'GET',
     }

@@ -1,4 +1,5 @@
 import CategoryFilter from "@/components/category-filter";
+import ProductGrid from "@/components/product-grid";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import { LuPlus } from "react-icons/lu";
@@ -22,6 +23,10 @@ export default function Home() {
       <div className="mb-8">
         <CategoryFilter />
       </div>
+      <div className="mb-8">
+        <ProductGrid></ProductGrid>
+      </div>
+
     </div>
 
   );

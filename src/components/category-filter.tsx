@@ -38,7 +38,7 @@ export default function CategoryFilter() {
 
   if (isLoading || !categories) {
     return <Skeleton className="rounded-lg w-56">
-      <div className="h-10 bg-zinc-900" />
+      <div className="h-10" />
     </Skeleton>
   }
   return (
@@ -48,8 +48,8 @@ export default function CategoryFilter() {
           <Button variant="bordered" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
             {currentCategory
               ? categories.find((category) => category.toLowerCase() === currentCategory.toLowerCase()) ||
-                "All Categories"
-              : "All Categories"}
+                "Todas las categorías"
+              : "Todas las categorías"}
             <LuChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
