@@ -17,7 +17,8 @@ export default function CategoryFilter() {
 
   const { data: categories, isLoading } = useQuery({
     queryFn: getCategories,
-    queryKey: ['categories']
+    queryKey: ['categories'],
+    refetchOnWindowFocus: false,
   })
 
   const searchCategory = () => {

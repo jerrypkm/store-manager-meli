@@ -11,17 +11,17 @@ export default function ProductGrid() {
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get("category")
 
-  const { data: products, isLoading, refetch } = useQuery({
+  const { data: products, isFetching, refetch } = useQuery({
     queryFn: () => getProducts(categoryParam?.toLowerCase() as Category),
     queryKey: ['products'],
-    staleTime: 10000,
+    refetchOnWindowFocus: false
   })
 
   useEffect(() => {
     refetch()
   }, [categoryParam, refetch])
 
-  if (isLoading || !products) {
+  if (isFetching || !products) {
     return <ProductGridSkeleton />
   }
 

@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import type { Product } from "@/interfaces/product.interface"
+import { type Product } from "@/interfaces/product.interface"
 import { Button } from "@heroui/button"
 import { Input, Textarea } from "@heroui/input"
 import { Form } from "@heroui/form"
 import { addToast } from "@heroui/toast"
 import { Select, SelectItem } from "@heroui/select"
 import { useQuery } from "@tanstack/react-query"
-import { addProduct, getCategories } from "@/services/store.service"
+import { addProduct, getCategories, updateProduct } from "@/services/store.service"
 import { categoryNames } from "@/utils/product.utils"
+import { Controller } from "react-hook-form"
 
 const formSchema = z.object({
   title: z.string().min(3, {
@@ -36,7 +37,7 @@ export default function ProductForm({ product }: Props) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { register, handleSubmit, formState: {errors} } = useForm<z.infer<typeof formSchema>>({
+  const { register, handleSubmit, formState: {errors}, control } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: product?.title || "",
@@ -48,21 +49,26 @@ export default function ProductForm({ product }: Props) {
   })
   const { data: categories } = useQuery({
     queryFn: getCategories,
-    queryKey: ['categories']
+    queryKey: ['categories'],
   })
   async function onSubmit(values: CreateProductValues) {
 
     setIsSubmitting(true)
     try {
       if (product) {
+        await updateProduct(product.id, values)
+        addToast({
+          title: "Product updated",
+          description: "The product has been successfully updated.",
+        })
+        router.push(`/products/${product.id}`)
       } else {
         const newProduct = await addProduct(values)
         addToast({
           title: "Producto añadido",
           description: "El producto fue añadido exitosamente",
         })
-
-        console.log(newProduct)
+        router.push(`/products/${newProduct.id}`)
       }
     } catch (error) {
       console.error(error)
@@ -123,20 +129,28 @@ export default function ProductForm({ product }: Props) {
           errorMessage={errors.image?.message}
           {...register('image')}
         />
-        <Select 
-          isRequired
-          size="lg"
-          label="Categoría del producto"
-          labelPlacement="outside"
-          placeholder="Selecciona una categoría"
-          isInvalid={!!errors.category}
-          errorMessage={errors.category?.message}
-          {...register('category')}
-        >
-          {categories ? categories.map((category) => (
-            <SelectItem key={category}>{categoryNames[category]}</SelectItem>
-          )): <></>}
-        </Select>
+        <Controller
+          control={control}
+          name="category"
+          render={({ field }) => (
+            <Select 
+              {...field}
+              isRequired
+              size="lg"
+              label="Categoría del producto"
+              defaultSelectedKeys={[product?.category ?? '']}
+              labelPlacement="outside"
+              placeholder="Selecciona una categoría"
+              isInvalid={!!errors.category}
+              errorMessage={errors.category?.message}
+              onChange={(e) => field.onChange(e.target.value)}
+            >
+              {categories ? categories.map((category) => (
+                <SelectItem key={category}>{categoryNames[category]}</SelectItem>
+              )): <></>}
+            </Select>
+          )}
+        />
 
         <div className="flex justify-end gap-4 pt-4">
           <Button type="button" variant="bordered" onPress={() => router.back()}>

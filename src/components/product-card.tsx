@@ -5,15 +5,25 @@ import { LuSquarePen, LuTrash2 } from "react-icons/lu"
 import { Button } from "@heroui/button"
 import { Chip } from "@heroui/chip"
 import { Card, CardBody, CardFooter } from "@heroui/card"
-import { Modal, ModalContent, useDisclosure, ModalHeader, ModalFooter } from "@heroui/modal"
+import { Modal, ModalContent, useDisclosure, ModalHeader, ModalFooter, ModalBody } from "@heroui/modal"
 import type { Product } from "@/interfaces/product.interface"
 import { categoryNames } from "@/utils/product.utils"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { deleteProduct } from "@/services/store.service"
 interface ProductCardProps {
   product: Product
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const queryClient = useQueryClient()
+  const { mutate: deleteProd, isPending } = useMutation({
+    mutationFn: () => deleteProduct(product.id),
+    onSuccess: () => {
+      onClose()
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+    }
+  })
 
   return (
     <Card className="overflow-hidden flex flex-col h-full">
@@ -57,17 +67,20 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardFooter>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size="xl" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {
             (onClose) => (
             <>
-                <ModalHeader>
-                  <p>¿Estás seguro que deseas eliminar el producto?</p>
+                <ModalHeader className="flex flex-col">
+                  ¿Estás seguro que deseas eliminar el producto {product.title}?               
                 </ModalHeader>
+                <ModalBody>
+                  El producto será eliminado, esta acción no se puede deshacer.
+                </ModalBody>
                 <ModalFooter>
                   <Button onPress={onClose}>Cancel</Button>
-                  <Button>Eliminar</Button>
+                  <Button isLoading={isPending} onPress={() => deleteProd()} color="danger">{isPending ? 'Eliminando...' : 'Eliminar'}</Button>
                 </ModalFooter>
               </>
             )
