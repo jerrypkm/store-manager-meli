@@ -29,7 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden flex flex-col h-full">
       <div className="relative bg-white pt-4 px-4 flex items-center justify-center h-48 bg-muted/20">
         <Image
-          src={product.image || "/placeholder.svg"}
+          src={product.image}
           alt={product.title}
           width={150}
           height={150}

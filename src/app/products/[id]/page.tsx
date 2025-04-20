@@ -30,7 +30,7 @@ export default async function ProductPage({
       <BackButton></BackButton>
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-muted/20 rounded-lg p-8 flex items-center justify-center">
+        <div className="bg-white rounded-lg p-8 flex items-center justify-center">
           <Image
             src={product.image || "/placeholder.svg"}
             alt={product.title}
