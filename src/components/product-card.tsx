@@ -7,8 +7,7 @@ import { Chip } from "@heroui/chip"
 import { Card, CardBody, CardFooter } from "@heroui/card"
 import { Modal, ModalContent, useDisclosure, ModalHeader, ModalFooter } from "@heroui/modal"
 import type { Product } from "@/interfaces/product.interface"
-import { categoryNames } from "./category-filter"
-
+import { categoryNames } from "@/utils/product.utils"
 interface ProductCardProps {
   product: Product
 }

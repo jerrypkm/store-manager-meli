@@ -13,7 +13,7 @@ import { addToast } from "@heroui/toast"
 import { Select, SelectItem } from "@heroui/select"
 import { useQuery } from "@tanstack/react-query"
 import { addProduct, getCategories } from "@/services/store.service"
-import { categoryNames } from "./category-filter"
+import { categoryNames } from "@/utils/product.utils"
 
 const formSchema = z.object({
   title: z.string().min(3, {

@@ -7,15 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover"
 import { useQuery } from "@tanstack/react-query"
 import { getCategories } from "@/services/store.service"
 import { Skeleton } from "@heroui/skeleton"
-import { Category } from "@/interfaces/product.interface"
-
-export const categoryNames: {[key: string]: string} = {
-  [Category.Electronics]: 'Electrónicos',
-  [Category.Jewelery]: 'Joyería',
-  [Category.MenSClothing]: 'Ropa de hombre',
-  [Category.WomenSClothing]: 'Ropa de mujer',
-  default: 'Todas las categorías'
-}
+import { categoryNames } from "@/utils/product.utils"
 
 export default function CategoryFilter() {
   const router = useRouter()
@@ -62,6 +54,7 @@ export default function CategoryFilter() {
       <div className="h-10" />
     </Skeleton>
   }
+
   return (
     <div className="flex items-center gap-2">
       <Popover placement="bottom">

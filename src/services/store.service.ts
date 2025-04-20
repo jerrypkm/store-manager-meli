@@ -1,5 +1,5 @@
 'use server'
-import { Category, ProductInput } from "@/interfaces/product.interface";
+import { Category, Product, ProductInput } from "@/interfaces/product.interface";
 import type { ProductsResponse, CategoriesResponse } from "@/interfaces/service.interface";
 import { revalidatePath } from "next/cache";
 const storeBaseURL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
@@ -20,6 +20,24 @@ export const getProducts = async (category?: Category): Promise<ProductsResponse
   const products: ProductsResponse = await response.json();
 
   return products
+}
+
+export const getProduct = async (id: string): Promise<Product> => {
+  const response = await fetch(
+    `${storeBaseURL}/products/${id}`,
+    {
+      method: 'GET',
+      cache: 'no-store'
+    },
+  )
+
+  if(!response.ok){
+    throw new Error('Network response was not ok, status:' + response.status)
+  }
+
+  const product: Product = await response.json();
+
+  return product
 }
 
 export const getCategories = async (): Promise<CategoriesResponse> => {   
