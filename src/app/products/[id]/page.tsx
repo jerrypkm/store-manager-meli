@@ -4,47 +4,23 @@ import { notFound } from "next/navigation"
 import { LuSquarePen, LuStar } from "react-icons/lu"
 import { Button } from "@heroui/button"
 import { Chip } from "@heroui/chip"
-
-import { Category } from "@/interfaces/product.interface"
 import { BackButton } from "@/components/back-button"
-const categoryNames: {[key: string]: string} = {
-  [Category.Electronics]: 'Electrónicos',
-  [Category.Jewelery]: 'Joyería',
-  [Category.MenSClothing]: 'Ropa de hombre',
-  [Category.WomenSClothing]: 'Ropa de mujer',
-  default: 'Todas las categorías'
-}
+import { getProduct } from "@/services/store.service"
+import { categoryNames } from "@/utils/product.utils"
 
-async function getProduct(id: string) {
-  try {
-    const res = await fetch(`https://fakestoreapi.com/products/${id}`, {
-      cache: "no-store",
-    })
-
-    if (!res.ok) {
-      return null
-    }
-
-    return res.json()
-  } catch (error) {
-    console.error("Error fetching product:", error)
-    return null
-  }
+interface PageProps {
+  params: Promise<{ id: string }>
 }
 
 export default async function ProductPage({
   params,
-}: {
-  params: { id: string }
-}) {
+}: PageProps) {
   const {id} = await params
   const product = await getProduct(id)
 
   if (!product) {
     notFound()
   }
-
-  console.log(product)
 
   return (
     <div className="container mx-auto px-4 py-8">

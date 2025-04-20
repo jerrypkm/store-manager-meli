@@ -3,13 +3,17 @@ import ProductForm from "@/components/product-form"
 import { BackButton } from "@/components/back-button"
 import { getProduct } from "@/services/store.service"
 
+interface PageProps {
+  params: Promise<{ id: string }>
+}
+
 export default async function EditProductPage({
   params,
-}: {
-  params: { id: string }
-}) {
-  const {id} = await params;
+}: PageProps) {
+  const { id } = await params;
   const product = await getProduct(id)
+
+  console.log(id)
 
   if (!product) {
     notFound()
