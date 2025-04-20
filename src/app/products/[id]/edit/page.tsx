@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import ProductForm from "@/components/product-form"
 import { BackButton } from "@/components/back-button"
 import { getProduct } from "@/services/store.service"
+import { Product } from "@/interfaces/product.interface"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -11,9 +12,11 @@ export default async function EditProductPage({
   params,
 }: PageProps) {
   const { id } = await params;
-  const product = await getProduct(+id)
-
-  if (!product) {
+  let product: Product;
+  try{
+    product = await getProduct(+id)
+  }
+  catch{
     notFound()
   }
 

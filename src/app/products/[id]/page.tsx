@@ -7,6 +7,7 @@ import { Chip } from "@heroui/chip"
 import { BackButton } from "@/components/back-button"
 import { getProduct } from "@/services/store.service"
 import { categoryNames } from "@/utils/product.utils"
+import { Product } from "@/interfaces/product.interface"
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -15,10 +16,12 @@ interface PageProps {
 export default async function ProductPage({
   params,
 }: PageProps) {
-  const {id} = await params
-  const product = await getProduct(+id)
-
-  if (!product) {
+  const { id } = await params;
+  let product: Product;
+  try{
+    product = await getProduct(+id)
+  }
+  catch{
     notFound()
   }
 
