@@ -1,15 +1,18 @@
 'use client'
 import Image from "next/image"
 import Link from "next/link"
-import { notFound, useParams } from "next/navigation"
+import { notFound, useParams, useRouter } from "next/navigation"
 import { LuSquarePen, LuStar } from "react-icons/lu"
 import { Button } from "@heroui/button"
 import { Chip } from "@heroui/chip"
 import { BackButton } from "@/components/back-button"
-import { getLocalProduct } from "@/utils/localstorage"
+import { deleteLocalProduct, getLocalProduct } from "@/utils/localstorage"
 import { categoryNames } from "@/utils/product.utils"
 import { Product } from "@/interfaces/product.interface"
 import { useEffect, useState } from "react"
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/modal"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { deleteProduct } from "@/services/store.service"
 
 // interface PageProps {
 //   params: Promise<{ id: string }>
@@ -25,7 +28,20 @@ export default function ProductPage() {
   //   notFound()
   // }
   const { id } = useParams()
+  const router = useRouter()
   const [product, setProduct] = useState<Product>()
+
+  const { isOpen, onOpenChange, onClose, onOpen } = useDisclosure()
+  const queryClient = useQueryClient()
+  const { mutate: deleteProd, isPending } = useMutation({
+    mutationFn: () => deleteProduct(product!.id),
+    onSuccess: () => {
+      deleteLocalProduct(product!.id)
+      queryClient.invalidateQueries({ queryKey: ['products'] })
+      onClose()
+      router.push('/')
+    }
+  })
 
 
   useEffect(() => {
@@ -99,10 +115,31 @@ export default function ProductPage() {
                 Editar producto
               </Button>
             </Link>
-            <Button variant="solid" color="danger">Eliminar</Button>
+            <Button onPress={onOpen} variant="solid" color="danger">Eliminar</Button>
           </div>
         </div>
       </div>
+
+      <Modal size="xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {
+            (onClose) => (
+            <>
+                <ModalHeader className="flex flex-col">
+                  ¿Estás seguro que deseas eliminar el producto {product.title}?               
+                </ModalHeader>
+                <ModalBody>
+                  El producto será eliminado, esta acción no se puede deshacer.
+                </ModalBody>
+                <ModalFooter>
+                  <Button onPress={onClose}>Cancel</Button>
+                  <Button isLoading={isPending} onPress={() => deleteProd()} color="danger">{isPending ? 'Eliminando...' : 'Eliminar'}</Button>
+                </ModalFooter>
+              </>
+            )
+          }
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
