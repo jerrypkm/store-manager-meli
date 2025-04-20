@@ -1,29 +1,47 @@
+'use client'
 import Image from "next/image"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { notFound, useParams } from "next/navigation"
 import { LuSquarePen, LuStar } from "react-icons/lu"
 import { Button } from "@heroui/button"
 import { Chip } from "@heroui/chip"
 import { BackButton } from "@/components/back-button"
-import { getProduct } from "@/services/store.service"
+import { getLocalProduct } from "@/utils/localstorage"
 import { categoryNames } from "@/utils/product.utils"
 import { Product } from "@/interfaces/product.interface"
+import { useEffect, useState } from "react"
 
-interface PageProps {
-  params: Promise<{ id: string }>
-}
+// interface PageProps {
+//   params: Promise<{ id: string }>
+// }
 
-export default async function ProductPage({
-  params,
-}: PageProps) {
-  const { id } = await params;
-  let product: Product;
-  try{
-    product = await getProduct(+id)
+export default function ProductPage() {
+  // const { id } = await params;
+  // let product: Product;
+  // try{
+  //   product = await getProduct(+id)
+  // }
+  // catch{
+  //   notFound()
+  // }
+  const { id } = useParams()
+  const [product, setProduct] = useState<Product>()
+
+
+  useEffect(() => {
+    try{
+      const product = getLocalProduct(+id!)
+      setProduct(product)
+    }
+    catch{
+      notFound()
+    }
+  }, [id])
+
+  if(!product) {
+    return <></>
   }
-  catch{
-    notFound()
-  }
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -47,7 +65,7 @@ export default async function ProductPage({
               {categoryNames[product.category]}
             </Chip>
             <h1 className="text-3xl font-bold">{product.title}</h1>
-            <div className="flex items-center mt-2">
+            {product.rating && <div className="flex items-center mt-2">
               <div className="flex items-center">
                 {Array(5)
                   .fill(0)
@@ -63,7 +81,7 @@ export default async function ProductPage({
               <span className="ml-2 text-sm text-muted-foreground">
                 ({product.rating.rate}) · {product.rating.count} reseñas
               </span>
-            </div>
+            </div>}
           </div>
 
           <div className="text-3xl font-bold">${product.price.toFixed(2)}</div>

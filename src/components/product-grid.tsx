@@ -1,31 +1,16 @@
 "use client"
-import { useSearchParams } from "next/navigation"
-import { useEffect } from "react"
 import ProductCard from "./product-card"
 import { Skeleton } from "@heroui/skeleton"
-import type { Category } from "@/interfaces/product.interface"
-import { useQuery } from "@tanstack/react-query"
-import { getProducts } from "@/services/store.service"
+import useProducts from "@/hooks/useProducts"
 
 export default function ProductGrid() {
-  const searchParams = useSearchParams()
-  const categoryParam = searchParams.get("category")
+  const { isFetching, localProducts }  = useProducts()
 
-  const { data: products, isFetching, refetch } = useQuery({
-    queryFn: () => getProducts(categoryParam?.toLowerCase() as Category),
-    queryKey: ['products'],
-    refetchOnWindowFocus: false
-  })
-
-  useEffect(() => {
-    refetch()
-  }, [categoryParam, refetch])
-
-  if (isFetching || !products) {
+  if (isFetching) {
     return <ProductGridSkeleton />
   }
 
-  if (products.length === 0) {
+  if (localProducts?.length === 0) {
     return (
       <div className="text-center py-12">
         <h2 className="text-xl font-semibold">No se encontraron productos</h2>
@@ -36,7 +21,7 @@ export default function ProductGrid() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map((product) => (
+      {localProducts?.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>

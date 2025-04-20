@@ -10,6 +10,7 @@ import type { Product } from "@/interfaces/product.interface"
 import { categoryNames } from "@/utils/product.utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteProduct } from "@/services/store.service"
+import { deleteLocalProduct } from "@/utils/localstorage"
 interface ProductCardProps {
   product: Product
 }
@@ -20,8 +21,10 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { mutate: deleteProd, isPending } = useMutation({
     mutationFn: () => deleteProduct(product.id),
     onSuccess: () => {
-      onClose()
+      deleteLocalProduct(product.id)
+      window.location.reload()
       queryClient.invalidateQueries({ queryKey: ['products'] })
+      onClose()
     }
   })
 

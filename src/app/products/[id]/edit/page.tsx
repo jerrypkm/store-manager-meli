@@ -1,23 +1,38 @@
-import { notFound } from "next/navigation"
+'use client'
+import { notFound, useParams } from "next/navigation"
 import ProductForm from "@/components/product-form"
 import { BackButton } from "@/components/back-button"
-import { getProduct } from "@/services/store.service"
+// import { getProduct } from "@/services/store.service"
 import { Product } from "@/interfaces/product.interface"
+import { useEffect, useState } from "react"
+import { getLocalProduct } from "@/utils/localstorage"
 
-interface PageProps {
-  params: Promise<{ id: string }>
-}
+export default function EditProductPage() {
+  // const { id } = await params;
+  // let product: Product;
+  // try{
+  //   product = await getProduct(+id)
+  // }
+  // catch{
+  //   notFound()
+  // }
 
-export default async function EditProductPage({
-  params,
-}: PageProps) {
-  const { id } = await params;
-  let product: Product;
-  try{
-    product = await getProduct(+id)
-  }
-  catch{
-    notFound()
+  const { id } = useParams()
+  const [product, setProduct] = useState<Product>()
+
+
+  useEffect(() => {
+    try{
+      const product = getLocalProduct(+id!)
+      setProduct(product)
+    }
+    catch{
+      notFound()
+    }
+  }, [id])
+
+  if(!product) {
+    return <></>
   }
 
   return (

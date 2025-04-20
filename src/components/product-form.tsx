@@ -1,87 +1,20 @@
 "use client"
-
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
 import { type Product } from "@/interfaces/product.interface"
 import { Button } from "@heroui/button"
 import { Input, Textarea } from "@heroui/input"
 import { Form } from "@heroui/form"
-import { addToast } from "@heroui/toast"
 import { Select, SelectItem } from "@heroui/select"
-import { useQuery } from "@tanstack/react-query"
-import { addProduct, getCategories, updateProduct } from "@/services/store.service"
 import { categoryNames } from "@/utils/product.utils"
 import { Controller } from "react-hook-form"
 import { Skeleton } from "@heroui/skeleton"
-
-const formSchema = z.object({
-  title: z.string().min(3, {
-    message: "El título debe tener al menos 3 caracteres.",
-  }),
-  price: z.coerce.number({message: 'El precio no es válido'}).min(0.01, { message: "Price must be greater than 0." }),
-  description: z.string().min(10, {
-    message: "La descripción del producto debe tener al menos 10 caracteres",
-  }),
-  image: z.string().url({ message: "Por favor ingresa una URL válida" }),
-  category: z.string().min(1, { message: "Por favor selecciona una categoría" }),
-})
-type CreateProductValues = z.infer<typeof formSchema>
+import useProductForm from "@/hooks/useProductForm"
 
 interface Props {
   product?: Product
 }
 
 export default function ProductForm({ product }: Props) {
-  const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const { register, handleSubmit, formState: {errors}, control } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: product?.title || "",
-      price: product?.price || undefined,
-      description: product?.description || "",
-      image: product?.image || "",
-      category: product?.category || "",
-    },
-  })
-  const { data: categories } = useQuery({
-    queryFn: getCategories,
-    queryKey: ['categories'],
-  })
-  async function onSubmit(values: CreateProductValues) {
-
-    setIsSubmitting(true)
-    try {
-      if (product) {
-        await updateProduct(product.id, values)
-        addToast({
-          title: "Product updated",
-          description: "The product has been successfully updated.",
-        })
-        router.push(`/products/${product.id}`)
-      } else {
-        const newProduct = await addProduct(values)
-        addToast({
-          title: "Producto añadido",
-          description: "El producto fue añadido exitosamente",
-        })
-        router.push(`/products/${newProduct.id}`)
-      }
-    } catch (error) {
-      console.error(error)
-      addToast({
-        title: "Error",
-        description: "Error al guardar el producto. Inténtalo de nuevo más tarde",
-        color: "warning",
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const { categories, control, errors, handleSubmit, isSubmitting, onSubmit, register, router } = useProductForm({product})
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-1 gap-4">
@@ -134,8 +67,7 @@ export default function ProductForm({ product }: Props) {
           control={control}
           name="category"
           render={({ field }) => (
-            categories ? (
-            <Select 
+            categories && categories.length > 0  ? (<Select 
               {...field}
               isRequired
               size="lg"
@@ -150,12 +82,10 @@ export default function ProductForm({ product }: Props) {
               {categories.map((category) => (
                 <SelectItem key={category}>{categoryNames[category]}</SelectItem>
               ))}
-            </Select>) : (
-              <div className="flex flex-col gap-2 !mt-0 pt-0">
+            </Select>) : <div className="flex flex-col gap-2 !mt-0 pt-0">
             <Skeleton className="h-4 w-32"></Skeleton>
             <Skeleton className="h-10"></Skeleton>
             </div>
-            )
           )}
         />
 
