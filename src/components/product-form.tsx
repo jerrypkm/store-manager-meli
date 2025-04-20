@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query"
 import { addProduct, getCategories, updateProduct } from "@/services/store.service"
 import { categoryNames } from "@/utils/product.utils"
 import { Controller } from "react-hook-form"
+import { Skeleton } from "@heroui/skeleton"
 
 const formSchema = z.object({
   title: z.string().min(3, {
@@ -133,6 +134,7 @@ export default function ProductForm({ product }: Props) {
           control={control}
           name="category"
           render={({ field }) => (
+            categories ? (
             <Select 
               {...field}
               isRequired
@@ -145,10 +147,15 @@ export default function ProductForm({ product }: Props) {
               errorMessage={errors.category?.message}
               onChange={(e) => field.onChange(e.target.value)}
             >
-              {categories ? categories.map((category) => (
+              {categories.map((category) => (
                 <SelectItem key={category}>{categoryNames[category]}</SelectItem>
-              )): <></>}
-            </Select>
+              ))}
+            </Select>) : (
+              <div className="flex flex-col gap-2 !mt-0 pt-0">
+            <Skeleton className="h-4 w-32"></Skeleton>
+            <Skeleton className="h-10"></Skeleton>
+            </div>
+            )
           )}
         />
 
