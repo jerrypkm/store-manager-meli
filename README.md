@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prueba técnica store manager MELI
 
-## Getting Started
+Autor: Gerardo Chapa Díaz González
 
-First, run the development server:
 
+## Instalación en local
+
+1. Clona el proyecto en la rama main: 
+
+  ```bash
+  git clone https://github.com/jerrypkm/store-manager-meli.git
+  ```
+2. Instalar las dependencias del proyecto
+
+```bash
+  npm i
+  # or
+  yarn
+```
+3. Clonar el archivo .env.template y renombrarlo a .env
+4. Levantar el proyecto en desarrollo
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir [http://localhost:3000](http://localhost:3000) en el navegador para ver el proyecto en local.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Para despliegue a producción
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Realizar el build del proyecto con el comando
+```bash
+  npm run build
+  # or
+  yarn build
+```
+2. Con el build generado correr el comando en el servidor
+```bash
+  npm run start
+```
+3. Agregar las variables de entorno listadas en el archivo .env.template
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Tecnologías utilizadas
+- ``Tanstack Query`` para consumo de servicios
+- ``NextUI (HeroUI)`` como librería de componentes
+- ``zod y react-hook-form`` para validación de formularios
+- ``Tailwindcss`` para manejo de estilos y costumización de componentes
+- ``next-themes`` como gestor de temas
+- ``jest y react-testing-library`` para realización de pruebas unitarias
+- ``Typescript`` para tipado estricto
+- ``NextJS 15`` como framework de desarrollo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notas
+Se agregó una rama adicional llamada ``without-local-storage``. Que es altamente recomendada a implementar si se tiene una API real para ser conectada, y que no se dependa de localStorage para el almacenamiento de datos temporales.
