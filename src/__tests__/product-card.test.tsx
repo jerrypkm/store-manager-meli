@@ -5,7 +5,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { Category, Product } from '@/interfaces/product.interface'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-// 🧪 Mocks
 vi.mock('@/services/store.service', () => ({
   deleteProduct: vi.fn(),
 }))
@@ -30,7 +29,6 @@ vi.mock('@tanstack/react-query', async () => {
   }
 })
 
-// 🧪 Producto falso
 const mockProduct: Product = {
   id: 1,
   title: 'Camiseta',
