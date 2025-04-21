@@ -74,6 +74,7 @@ export const addProduct = async(product: ProductInput) => {
   revalidatePath("/")
   return newProduct
 }
+
 export async function updateProduct(id: number, productToUpdate: ProductInput): Promise<Product> {
   const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
     method: "PUT",

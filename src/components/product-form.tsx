@@ -17,7 +17,7 @@ export default function ProductForm({ product }: Props) {
   const { categories, control, errors, handleSubmit, isSubmitting, onSubmit, register, router } = useProductForm({product})
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="space-y-6 grid grid-cols-1 gap-4">
+    <Form onSubmit={handleSubmit(onSubmit)} data-testid="form" className="space-y-6 grid grid-cols-1 gap-4">
         <Input
           isRequired
           size="lg"
@@ -83,8 +83,8 @@ export default function ProductForm({ product }: Props) {
                 <SelectItem key={category}>{categoryNames[category]}</SelectItem>
               ))}
             </Select>) : <div className="flex flex-col gap-2 !mt-0 pt-0">
-            <Skeleton className="h-4 w-32"></Skeleton>
-            <Skeleton className="h-10"></Skeleton>
+              <Skeleton className="h-4 w-32"></Skeleton>
+              <Skeleton className="h-10"></Skeleton>
             </div>
           )}
         />

@@ -43,6 +43,7 @@ const useProductForm = ({product}: Props) => {
   const { data: categories } = useQuery({
     queryFn: getCategories,
     queryKey: ['categories'],
+    refetchOnWindowFocus: false,
   })
   async function onSubmit(values: CreateProductValues) {
 

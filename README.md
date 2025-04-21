@@ -52,5 +52,9 @@ Abrir [http://localhost:3000](http://localhost:3000) en el navegador para ver el
 - ``Typescript`` para tipado estricto
 - ``NextJS 15`` como framework de desarrollo
 
-## Notas
-Se agregó una rama adicional llamada ``without-local-storage``. Que es altamente recomendada a implementar si se tiene una API real para ser conectada, y que no se dependa de localStorage para el almacenamiento de datos temporales.
+## Notas importantes
+
+La rama ``main`` tiene implementado un guardado temporal de datos en localStorage, hace una consulta inicial y utiliza esa información para simular el uso del administrador de la tienda. Si se requiere resetear al valor inicial es necesario realizar un borrado de los datos de navegación, en específico el elemento ``products`` de LocalStorage
+
+Se agregó una rama adicional llamada ``without-local-storage``. Que es altamente recomendada a implementar si se tiene una API real para ser conectada, y de esa manera no depender de LocalStorage para almancenar información. Si se utliza esta rama con fake API store sí se harán las consultas pero no se verán reflejados ningún tipo de cambios.
+
