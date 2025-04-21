@@ -13,16 +13,16 @@ Autor: Gerardo Chapa Díaz González
 2. Instalar las dependencias del proyecto
 
 ```bash
-  npm i
-  # or
-  yarn
+  npm install
 ```
 3. Clonar el archivo .env.template y renombrarlo a .env
 4. Levantar el proyecto en desarrollo
 ```bash
-npm run dev
-# or
-yarn dev
+  npm run dev
+```
+5. Para correr los test unitarios utilizar el comando
+```bash
+  npm run test
 ```
 
 Abrir [http://localhost:3000](http://localhost:3000) en el navegador para ver el proyecto en local.
@@ -43,14 +43,16 @@ Abrir [http://localhost:3000](http://localhost:3000) en el navegador para ver el
 
 
 ## Tecnologías utilizadas
+- ``NextJS 15`` como framework de desarrollo
+- ``Typescript`` para tipado estricto
 - ``Tanstack Query`` para consumo de servicios
-- ``NextUI (HeroUI)`` como librería de componentes
+- ``NextUI (HeroUI)`` como librería de componentes de UI
 - ``zod y react-hook-form`` para validación de formularios
 - ``Tailwindcss`` para manejo de estilos y costumización de componentes
 - ``next-themes`` como gestor de temas
-- ``jest y react-testing-library`` para realización de pruebas unitarias
-- ``Typescript`` para tipado estricto
-- ``NextJS 15`` como framework de desarrollo
+- ``vitest y react-testing-library`` para realización de pruebas unitarias
+- ``github actions`` para gestionar workflows de despliegues
+- ``Vercel`` como entorno de despliegue en la nube
 
 ## Notas importantes
 

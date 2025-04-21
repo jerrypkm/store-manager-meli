@@ -56,7 +56,7 @@ export const getLocalProduct = (productId: number): Product | undefined => {
   const foundProduct = products.find((p: Product) => p.id === productId)
 
   if(!foundProduct){
-    return undefined
+    throw new Error('Not found')
   }
 
   return foundProduct

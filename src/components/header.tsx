@@ -7,7 +7,7 @@ export default function Header() {
     <header className="border-b bg-[#ffe600] dark:bg-background">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <Image alt="logo" width={50} height={30} src={'/mercado-libre.png'}></Image>
+          <Image alt="logo" className="w-auto" width={50} height={30} src={'/mercado-libre.png'}></Image>
         </Link>
         <div className="flex items-center gap-4">
           <ThemeToggle />
