@@ -4,6 +4,7 @@ Autor: Gerardo Chapa Díaz González
 
 
 ## Instalación en local
+Se recomienda node +18.0
 
 1. Clona el proyecto en la rama main: 
 
